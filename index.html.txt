@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gerador de Ideias</title>
+
+<style>
+body {
+    background: #1e1e1e;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+input, button {
+    padding: 10px;
+    margin: 10px;
+    background: #2d2d2d;
+    color: white;
+    border: none;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.tag {
+    display: inline-block;
+    background: #2d2d2d;
+    padding: 8px 12px;
+    margin: 5px;
+    border: 1px solid #555;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🎨 Gerador de Ideias</h2>
+
+<input type="number" id="complexidade" placeholder="Complexidade">
+<br>
+<button onclick="gerar()">Gerar Ideia</button>
+
+<div class="container" id="resultado"></div>
+
+<script>
+const palavras = [
+    "samurai","robô","dragão","mago","cyberpunk","floresta",
+    "deserto","cidade","futurista","zumbi","alienígena",
+    "gigante","voador","sombrio","colorido","com espada",
+    "com asas","com máscara","com energia elétrica"
+];
+
+function gerar() {
+    const comp = parseInt(document.getElementById("complexidade").value);
+    const resultado = document.getElementById("resultado");
+    resultado.innerHTML = "";
+
+    if (!comp || comp < 1) return;
+
+    let copia = [...palavras];
+
+    for (let i = 0; i < comp; i++) {
+        let index = Math.floor(Math.random() * copia.length);
+        let palavra = copia.splice(index, 1);
+
+        let tag = document.createElement("div");
+        tag.className = "tag";
+        tag.innerText = palavra;
+
+        resultado.appendChild(tag);
+    }
+}
+</script>
+
+</body>
+</html>
