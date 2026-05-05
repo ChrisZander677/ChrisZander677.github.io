@@ -31,39 +31,87 @@ input, button {
     margin: 5px;
     border: 1px solid #555;
 }
+
+.info {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.desafio {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #00ff9c;
+}
 </style>
 </head>
 
 <body>
 
-<h2>🎨 Gerador de Ideias V0.4</h2>
+<h2>🎨 Gerador de Ideias V0.5</h2>
 
 <input type="number" id="complexidade" placeholder="Complexidade">
+<div class="info">
+Complexidade = quantidade de palavras sorteadas
+</div>
+
+<label>
+<input type="checkbox" id="modoDesafio">
+ Ativar desafio 🎯
+</label>
+
 <br>
 <button onclick="gerar()">Gerar Ideia</button>
 
 <div class="container" id="resultado"></div>
+<div id="desafioBox" class="desafio"></div>
 
 <script>
-const palavras = [
-    "samurai","robô","dragão","mago","cyberpunk","floresta",
-    "deserto","cidade","futurista","zumbi","alienígena",
-    "gigante","voador","sombrio","colorido","com espada",
-    "com asas","com máscara","com energia elétrica"
+
+// 📦 Categorias (organização interna)
+const categorias = {
+    personagens: ["samurai","robô","dragão","mago","zumbi","alienígena"],
+    lugares: ["floresta","deserto","cidade"],
+    estilos: ["cyberpunk","futurista","sombrio","colorido"],
+    atributos: ["gigante","voador"],
+    extras: ["com espada","com asas","com máscara","com energia elétrica"]
+};
+
+// 🎯 Desafios
+const desafios = [
+    "Desenhe em 1 minuto",
+    "Desenhe em 5 minutos",
+    "Desenhe em 10 minutos",
+    "Desenhe em 20 minutos"
 ];
+
+// 🔄 Junta tudo automaticamente (sem bagunça)
+function juntarPalavras() {
+    let todas = [];
+    for (let cat in categorias) {
+        todas = todas.concat(categorias[cat]);
+    }
+    return todas;
+}
 
 function gerar() {
     const comp = parseInt(document.getElementById("complexidade").value);
     const resultado = document.getElementById("resultado");
+    const desafioBox = document.getElementById("desafioBox");
+    const modoDesafio = document.getElementById("modoDesafio").checked;
+
     resultado.innerHTML = "";
+    desafioBox.innerHTML = "";
 
     if (!comp || comp < 1) return;
 
+    let palavras = juntarPalavras();
     let copia = [...palavras];
 
     for (let i = 0; i < comp; i++) {
+        if (copia.length === 0) break;
+
         let index = Math.floor(Math.random() * copia.length);
-        let palavra = copia.splice(index, 1);
+        let palavra = copia.splice(index, 1)[0];
 
         let tag = document.createElement("div");
         tag.className = "tag";
@@ -71,7 +119,14 @@ function gerar() {
 
         resultado.appendChild(tag);
     }
+
+    // 🎯 Sistema de desafio
+    if (modoDesafio) {
+        let desafio = desafios[Math.floor(Math.random() * desafios.length)];
+        desafioBox.innerText = "🔥 Desafio: " + desafio;
+    }
 }
+
 </script>
 
 </body>
